@@ -1,0 +1,18 @@
+{
+  "packageId": "wpkf5Ul97CY0q",
+  "spaceId": "spca33AJDEVhL",
+  "entry": "./src/index.ts",
+  "name": {
+    "zh-CN": "widgetsTodoListTemplate",
+    "en-US": "widgetsTodoListTemplate"
+  },
+  "icon": "./package_icon.png",
+  "authorName": "Vika",
+  "authorIcon": "./author_icon.png",
+  "authorLink": "https://vika.cn",
+  "authorEmail": "dev@vikadata.com",
+  "description": {
+    "zh-CN": "作为一个标记记录的待办事项列表",
+    "en-US": "作为一个标记记录的待办事项列表"
+  }
+}
