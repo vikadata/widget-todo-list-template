@@ -1,8 +1,7 @@
 import { Box, Button, IconButton, TextInput } from '@vikadata/components';
 import { AddOutlined, CloseMiddleOutlined } from '@vikadata/icons';
 import { useCloudStorage, ViewPickerCooperated, FieldPickerCooperated, useRecords, useDatasheet, useFields } from '@vikadata/widget-sdk';
-import React, { useState, useEffect } from 'react';
-import { SubmitRecordBtn } from './submitRecordBtn';
+import React, { useState } from 'react';
 import { Setting } from './setting';
 
 export const TodoList: React.FC = () => {
@@ -11,34 +10,42 @@ export const TodoList: React.FC = () => {
   const records = useRecords(viewId);
   const [fieldId] = useCloudStorage<string>('selectedFieldId');
   const [recordInput, setRecordInput] = useState<string>();
-  const fields = useFields(viewId);
-  const [selectTask, setSelectTask] = useState<string | null>()
   const addRecords = () => {
-    if (datasheet && datasheet.checkPermissionsForAddRecord()) {
-      datasheet.addRecord({[fieldId]: recordInput})
-    } else {
-      alert(datasheet.checkPermissionsForAddRecord().message)
+    const fieldsMap = {[fieldId]: recordInput}
+    if (!datasheet) {
+      return
     }
+    const addRecordCheckResult =  datasheet.checkPermissionsForAddRecord(fieldsMap)
+    if (!addRecordCheckResult.acceptable) {
+      alert(addRecordCheckResult.message)
+      return
+    }
+    datasheet.addRecord(fieldsMap)
   }
 
   const setRecord = (recordId: string, fieldMap) => {
-    if (datasheet && datasheet.checkPermissionsForSetRecord(recordId, fieldMap).acceptable) {
-      datasheet.setRecord(recordId, fieldMap)
-    } else {
-      alert(datasheet.checkPermissionsForSetRecord(recordId, fieldMap).message)
+    if (!datasheet) {
+      return
     }
+    const setRecordCheckResult =  datasheet.checkPermissionsForSetRecord(recordId, fieldMap)
+    if (!setRecordCheckResult.acceptable) {
+      alert(setRecordCheckResult.message)
+      return
+    }
+    datasheet.setRecord(recordId, fieldMap)
   }
 
-  useEffect(() => {
-    const obj = {};
-    records.map(record => {
-      const r = {}
-      fields.map(({id, name}) => {
-        r[id] = {value: record.getCellValue(id), title: name};
-      })
-      obj[record.id] = r
-    })
-  }, [viewId]);
+  const deleteRecord = (recordId: string) => {
+    if (!datasheet) {
+      return
+    }
+    const deleteRecordCheckResult =  datasheet.checkPermissionsForDeleteRecord(recordId)
+    if (!deleteRecordCheckResult.acceptable) {
+      alert(deleteRecordCheckResult.message)
+      return
+    }
+    datasheet.deleteRecord(recordId)
+  }
 
   const tasks = records.map(record => {
     const cellValue = record.getCellValue(fieldId)
@@ -52,16 +59,8 @@ export const TodoList: React.FC = () => {
       flexWrap="wrap"
     >
       <input type="checkbox" id="check1" checked={curCellValue} onClick={e => setRecord(record.recordId, {[fieldId]: !curCellValue})}/>
-      <div style={{padding: '0 8px', flex: 1}}><b>{record.name}</b></div>
-      <RecordDeleteButton datasheet={datasheet} recordId={record.recordId} />
-      <Box
-        width="100%"
-        display="flex"
-        paddingY={3}
-        alignItems="center">
-        <input type="checkbox" id="check2" checked={selectTask === record.recordId} onClick={e => setSelectTask(selectTask === record.recordId ? '' : record.recordId)}/>
-        选中
-      </Box>
+      <div style={{padding: '0 8px', flex: 1}}><b>{record.title}</b></div>
+      <RecordDeleteButton recordId={record.recordId} onClick={deleteRecord}/>
     </Box>
   })
   return (
@@ -90,12 +89,6 @@ export const TodoList: React.FC = () => {
             Add
           </Button>
         </Box>
-        <Box marginX={2} marginY={2}>
-          <Button color="primary" size="small" onClick={() => selectTask && setRecord(selectTask, {[fieldId]: null})} block>
-            clear
-          </Button>
-        </Box>
-        <Box marginX={2}><SubmitRecordBtn recordId={selectTask}/></Box>
       </div>
       <Setting />
     </div>
@@ -111,14 +104,8 @@ const FormItem = ({label, children}) => {
   )
 }
 
-const RecordDeleteButton = ({datasheet, recordId}) => {
+const RecordDeleteButton = ({ recordId, onClick }) => {
   return (
-    <IconButton icon={CloseMiddleOutlined} variant="default" onClick={() => {
-      if (datasheet && datasheet.checkPermissionsForDeleteRecord(recordId).acceptable) {
-        datasheet.deleteRecord(recordId)
-      } else {
-        alert(datasheet.checkPermissionsForDeleteRecord(recordId).message)
-      }
-    }}></IconButton>
+    <IconButton icon={CloseMiddleOutlined} variant="default" onClick={() => onClick(recordId)}></IconButton>
   )
 }
