@@ -3,8 +3,8 @@
   "spaceId": "spca33AJDEVhL",
   "entry": "./src/index.ts",
   "name": {
-    "zh-CN": "widgetsTodoListTemplate",
-    "en-US": "widgetsTodoListTemplate"
+    "zh-CN": "Todo MVC",
+    "en-US": "Todo MVC"
   },
   "icon": "./package_icon.png",
   "cover": "./cover.png",

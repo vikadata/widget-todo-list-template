@@ -1,6 +1,6 @@
 {
   "name": "widgets-todo-list-template",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "a vika widget",
   "engines": {
     "node": ">=8.x"
