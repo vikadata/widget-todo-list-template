@@ -7,6 +7,7 @@
     "en-US": "widgetsTodoListTemplate"
   },
   "icon": "./package_icon.png",
+  "cover": "./cover.png",
   "authorName": "Vika",
   "authorIcon": "./author_icon.png",
   "authorLink": "https://vika.cn",
@@ -14,5 +15,6 @@
   "description": {
     "zh-CN": "作为一个标记记录的待办事项列表",
     "en-US": "作为一个标记记录的待办事项列表"
-  }
+  },
+  "globalPackageId": "wpkP54M0LMh9U"
 }
