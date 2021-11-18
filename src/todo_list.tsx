@@ -1,14 +1,14 @@
 import { Box, Button, IconButton, TextInput } from '@vikadata/components';
 import { AddOutlined, CloseMiddleOutlined } from '@vikadata/icons';
-import { useCloudStorage, ViewPickerCooperated, FieldPickerCooperated, useRecords, useDatasheet, useFields } from '@vikadata/widget-sdk';
+import { useCloudStorage, ViewPicker, FieldPicker, useRecords, useDatasheet } from '@vikadata/widget-sdk';
 import React, { useState } from 'react';
 import { Setting } from './setting';
 
 export const TodoList: React.FC = () => {
   const datasheet = useDatasheet();
-  const [viewId] = useCloudStorage<string>('selectedViewId')
+  const [viewId, setViewId] = useCloudStorage<string>('selectedViewId')
   const records = useRecords(viewId);
-  const [fieldId] = useCloudStorage<string>('selectedFieldId');
+  const [fieldId, setFieldId] = useCloudStorage<string>('selectedFieldId');
   const [recordInput, setRecordInput] = useState<string>();
   const addRecords = () => {
     const fieldsMap = {[fieldId]: recordInput}
@@ -71,10 +71,10 @@ export const TodoList: React.FC = () => {
           borderBottom='2px solid rgba(0, 0, 0, 0.1)'
         >
           <FormItem label="View">
-            <ViewPickerCooperated cloudStorageKey={'selectedViewId'}/>
+            <ViewPicker viewId={viewId} onChange={option => setViewId(option.value)} />
           </FormItem>
           <FormItem label="Field">
-            <FieldPickerCooperated globalStorageKey={'selectedFieldId'} viewId={viewId} />
+            <FieldPicker viewId={viewId} fieldId={fieldId} onChange={option => setFieldId(option.value)} />
           </FormItem>
         </Box>
         {tasks}
