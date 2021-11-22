@@ -1,6 +1,6 @@
 import { Box, Button, IconButton, TextInput } from '@vikadata/components';
 import { AddOutlined, CloseMiddleOutlined } from '@vikadata/icons';
-import { useCloudStorage, ViewPicker, FieldPicker, useRecords, useDatasheet } from '@vikadata/widget-sdk';
+import { useCloudStorage, ViewPicker, FieldPicker, useRecords, useDatasheet, usePrimaryField } from '@vikadata/widget-sdk';
 import React, { useState } from 'react';
 import { Setting } from './setting';
 
@@ -10,8 +10,9 @@ export const TodoList: React.FC = () => {
   const records = useRecords(viewId);
   const [fieldId, setFieldId] = useCloudStorage<string>('selectedFieldId');
   const [recordInput, setRecordInput] = useState<string>();
+  const primaryField = usePrimaryField();
   const addRecords = () => {
-    const fieldsMap = {[fieldId]: recordInput}
+    const fieldsMap = {[primaryField!.id]: recordInput}
     if (!datasheet) {
       return
     }
