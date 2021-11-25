@@ -1,6 +1,5 @@
 {
-  "name": "widgets-todo-list-template",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "a vika widget",
   "engines": {
     "node": ">=8.x"
@@ -28,9 +27,9 @@
   "dependencies": {
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
-    "@vikadata/components": "*",
-    "@vikadata/icons": "*",
-    "@vikadata/widget-sdk": "*",
+    "@vikadata/components": "latest",
+    "@vikadata/icons": "latest",
+    "@vikadata/widget-sdk": "latest",
     "typescript": "4.1.2"
   },
   "devDependencies": {
