@@ -1,5 +1,5 @@
 {
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "a vika widget",
   "engines": {
     "node": ">=8.x"
@@ -21,8 +21,8 @@
     "release": "widget-cli release"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "16.14.0",
+    "react-dom": "16.14.0"
   },
   "dependencies": {
     "@types/react": "^16.9.43",
