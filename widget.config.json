@@ -13,8 +13,8 @@
   "authorLink": "https://vika.cn",
   "authorEmail": "dev@vikadata.com",
   "description": {
-    "zh-CN": "作为一个标记记录的待办事项列表",
-    "en-US": "作为一个标记记录的待办事项列表"
+    "zh-CN": "将表格中的任务变成待办事项列表，支持快速勾选和插入记录",
+    "en-US": "Convert tasks from the datasheet into a to-do list that allows you to check and insert records quickly"
   },
   "globalPackageId": "wpkP54M0LMh9U"
 }
