@@ -34,8 +34,5 @@
   },
   "devDependencies": {
     "@types/node": "^16.4.10"
-  },
-  "authorName": "__template__",
-  "authorLink": "https://vika.cn",
-  "authorEmail": "dev@vikadata.com"
+  }
 }
