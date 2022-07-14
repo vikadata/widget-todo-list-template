@@ -5,12 +5,16 @@ import React, { useState } from 'react';
 
 export const TodoList: React.FC = () => {
   const datasheet = useDatasheet();
+  // 选择list来源的视图ID
   const [viewId, setViewId] = useCloudStorage<string>('selectedViewId');
   const records = useRecords(viewId);
+  // 选择的字段ID（注意：选择的字段类型必须是勾选）
   const [fieldId, setFieldId] = useCloudStorage<string>('selectedFieldId');
+  // 新增任务的首列值
   const [recordInput, setRecordInput] = useState<string>();
   const primaryField = usePrimaryField();
   const addRecords = () => {
+    // 新增任务，把输入的值作为首列标题写入新增记录行
     const fieldsMap = { [primaryField!.id]: recordInput };
     if (!datasheet) {
       return;
@@ -23,11 +27,13 @@ export const TodoList: React.FC = () => {
     datasheet.addRecord(fieldsMap);
   };
 
+  // 改变任务记录状态
   const setRecord = (recordId: string, fieldMap) => {
     if (!datasheet) {
       return;
     }
     const setRecordCheckResult =  datasheet.checkPermissionsForSetRecord(recordId, fieldMap);
+    // 如果字段选择的不是勾选类型，setRecordCheckResult一定会失败
     if (!setRecordCheckResult.acceptable) {
       alert(setRecordCheckResult.message);
       return;
@@ -35,6 +41,7 @@ export const TodoList: React.FC = () => {
     datasheet.setRecord(recordId, fieldMap);
   };
 
+  // 删除任务记录
   const deleteRecord = (recordId: string) => {
     if (!datasheet) {
       return;
@@ -47,6 +54,7 @@ export const TodoList: React.FC = () => {
     datasheet.deleteRecord(recordId);
   };
 
+  // 任务列表UI
   const tasks = records.map(record => {
     const cellValue = record.getCellValue(fieldId);
     const curCellValue = typeof cellValue === 'boolean' ? cellValue : false;
