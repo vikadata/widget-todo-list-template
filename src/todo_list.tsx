@@ -1,20 +1,20 @@
-import { Box, Button, IconButton, TextInput, Typography } from '@vikadata/components';
-import { AddOutlined, CloseMiddleOutlined } from '@vikadata/icons';
-import { useCloudStorage, ViewPicker, FieldPicker, useRecords, useDatasheet, usePrimaryField } from '@vikadata/widget-sdk';
+import { Box, Button, IconButton, TextInput, Typography } from '@apitable/components';
+import { AddOutlined, CloseMiddleOutlined } from '@apitable/icons';
+import { useCloudStorage, ViewPicker, FieldPicker, useRecords, useDatasheet, usePrimaryField } from '@apitable/widget-sdk';
 import React, { useState } from 'react';
 
 export const TodoList: React.FC = () => {
   const datasheet = useDatasheet();
-  // 选择list来源的视图ID
+  // Select the view ID of the list source.
   const [viewId, setViewId] = useCloudStorage<string>('selectedViewId');
   const records = useRecords(viewId);
-  // 选择的字段ID（注意：选择的字段类型必须是勾选）
+  // Selected field ID (note: the selected field type must be checked).
   const [fieldId, setFieldId] = useCloudStorage<string>('selectedFieldId');
-  // 新增任务的首列值
+  // First column value of the new task.
   const [recordInput, setRecordInput] = useState<string>();
   const primaryField = usePrimaryField();
   const addRecords = () => {
-    // 新增任务，把输入的值作为首列标题写入新增记录行
+    // New task to write the entered value as the first column header to the new record row.
     const fieldsMap = { [primaryField!.id]: recordInput };
     if (!datasheet) {
       return;
@@ -27,13 +27,13 @@ export const TodoList: React.FC = () => {
     datasheet.addRecord(fieldsMap);
   };
 
-  // 改变任务记录状态
+  // Change task record status.
   const setRecord = (recordId: string, fieldMap) => {
     if (!datasheet) {
       return;
     }
     const setRecordCheckResult =  datasheet.checkPermissionsForSetRecord(recordId, fieldMap);
-    // 如果字段选择的不是勾选类型，setRecordCheckResult一定会失败
+    // setRecordCheckResult must fail if the field is not selected as a checkbox type.
     if (!setRecordCheckResult.acceptable) {
       alert(setRecordCheckResult.message);
       return;
@@ -41,7 +41,7 @@ export const TodoList: React.FC = () => {
     datasheet.setRecord(recordId, fieldMap);
   };
 
-  // 删除任务记录
+  // Delete task records.
   const deleteRecord = (recordId: string) => {
     if (!datasheet) {
       return;
@@ -54,7 +54,7 @@ export const TodoList: React.FC = () => {
     datasheet.deleteRecord(recordId);
   };
 
-  // 任务列表UI
+  // Task List UI.
   const tasks = records.map(record => {
     const cellValue = record.getCellValue(fieldId);
     const curCellValue = typeof cellValue === 'boolean' ? cellValue : false;
