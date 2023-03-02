@@ -1,16 +1,20 @@
-import { Box, Button, IconButton, TextInput, Typography } from '@vikadata/components';
-import { AddOutlined, CloseMiddleOutlined } from '@vikadata/icons';
-import { useCloudStorage, ViewPicker, FieldPicker, useRecords, useDatasheet, usePrimaryField } from '@vikadata/widget-sdk';
+import { Box, Button, IconButton, TextInput, Typography } from '@apitable/components';
+import { AddOutlined, CloseMiddleOutlined } from '@apitable/icons';
+import { useCloudStorage, ViewPicker, FieldPicker, useRecords, useDatasheet, usePrimaryField } from '@apitable/widget-sdk';
 import React, { useState } from 'react';
 
 export const TodoList: React.FC = () => {
   const datasheet = useDatasheet();
+  // Select the view ID of the list source.
   const [viewId, setViewId] = useCloudStorage<string>('selectedViewId');
   const records = useRecords(viewId);
+  // Selected field ID (note: the selected field type must be checked).
   const [fieldId, setFieldId] = useCloudStorage<string>('selectedFieldId');
+  // First column value of the new task.
   const [recordInput, setRecordInput] = useState<string>();
   const primaryField = usePrimaryField();
   const addRecords = () => {
+    // New task to write the entered value as the first column header to the new record row.
     const fieldsMap = { [primaryField!.id]: recordInput };
     if (!datasheet) {
       return;
@@ -23,11 +27,13 @@ export const TodoList: React.FC = () => {
     datasheet.addRecord(fieldsMap);
   };
 
+  // Change task record status.
   const setRecord = (recordId: string, fieldMap) => {
     if (!datasheet) {
       return;
     }
     const setRecordCheckResult =  datasheet.checkPermissionsForSetRecord(recordId, fieldMap);
+    // setRecordCheckResult must fail if the field is not selected as a checkbox type.
     if (!setRecordCheckResult.acceptable) {
       alert(setRecordCheckResult.message);
       return;
@@ -35,6 +41,7 @@ export const TodoList: React.FC = () => {
     datasheet.setRecord(recordId, fieldMap);
   };
 
+  // Delete task records.
   const deleteRecord = (recordId: string) => {
     if (!datasheet) {
       return;
@@ -47,6 +54,7 @@ export const TodoList: React.FC = () => {
     datasheet.deleteRecord(recordId);
   };
 
+  // Task List UI.
   const tasks = records.map(record => {
     const cellValue = record.getCellValue(fieldId);
     const curCellValue = typeof cellValue === 'boolean' ? cellValue : false;
